@@ -45,3 +45,39 @@ class TestMyString:
         assert(simple_string.count_sentences() == 3)
         assert(empty_string.count_sentences() == 0)
         assert(complex_string.count_sentences() == 4)
+
+
+import io
+import sys
+import unittest
+from count_sentences import MyString
+
+class TestMyString(unittest.TestCase):
+    def test_value_string(self):
+        '''prints "The value must be a string." if not string.'''
+        captured_out = io.StringIO()
+        sys.stdout = captured_out
+        string = MyString()
+        string.value = 123
+        sys.stdout = sys.__stdout__
+        self.assertEqual(captured_out.getvalue(), "The value must be a string.\n")
+
+    def test_is_sentence(self):
+        '''returns True if value ends with a period and False otherwise.'''
+        self.assertTrue(MyString("Hello World.").is_sentence())
+
+    def test_is_question(self):
+        '''returns True if value ends with a question mark and False otherwise.'''
+        self.assertTrue(MyString("Is anybody there?").is_question())
+
+    def test_is_exclamation(self):
+        '''returns True if value ends with an exclamation mark and False otherwise.'''
+        self.assertTrue(MyString("It's me!").is_exclamation())
+
+    def test_count_sentences(self):
+        '''returns the number of sentences in the value.'''
+        simple_string = MyString("one. two. three?")
+        self.assertEqual(simple_string.count_sentences(), 3)
+
+if __name__ == '__main__':
+    unittest.main()
